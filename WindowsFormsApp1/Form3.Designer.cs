@@ -1,4 +1,10 @@
-﻿namespace WindowsFormsApp1
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using WindowsFormsApp1.Properties;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
+namespace WindowsFormsApp1
 {
     partial class Form3
     {
@@ -26,14 +32,7 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
-        {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form3";
-        }
-
+        
         #endregion
     }
 }
