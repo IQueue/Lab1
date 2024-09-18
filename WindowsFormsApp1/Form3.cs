@@ -210,6 +210,7 @@ namespace WindowsFormsApp1
         }
 
         private HSV[,] pixel = new HSV[768, 514];
+        private HSV[,] pixel_buf = new HSV[768, 514];
         private bool f = true;
 
         void UpdateImage()
@@ -225,29 +226,28 @@ namespace WindowsFormsApp1
 
                     // Преобразуем RGB в HSV
                     ConvertRGBtoHSV(pixelColor, out pixel[x,y]);
+                    ConvertRGBtoHSV(pixelColor, out pixel_buf[x,y]);
                 }
             }
+            f = false;
         }
 
         void UpdateImageHue()
         {
             int widht = originalImage.Width;
             int height = originalImage.Height;
-
+            double delta = trackBarHue.Value;
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < widht; x++)
                 {
                     // Изменяем значения HSV на основе ползунков
-                    pixel[x, y].hue = (pixel[x, y].hue + trackBarHue.Value) % 360;
-                    //pixel[x, y].hue = trackBarHue.Value;
-                    
+                    pixel_buf[x, y].hue = (pixel[x,y].hue + delta) % 360;
                     // Преобразуем обратно в RGB
-                    Color newColor = ConvertHSVtoRGB(pixel[x, y]);
+                    Color newColor = ConvertHSVtoRGB(pixel_buf[x, y]);
                     processedImage.SetPixel(x, y, newColor);
                 }
             }
-            f = false;
             pictureBox1.Image = processedImage;
         }
 
@@ -255,20 +255,17 @@ namespace WindowsFormsApp1
         {
             int widht = originalImage.Width;
             int height = originalImage.Height;
-
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < widht; x++)
                 {
                     // Изменяем значения HSV на основе ползунков
-                    pixel[x, y].saturation = Math.Min(1, pixel[x, y].saturation * trackBarSaturation.Value / 100);
-
+                    pixel_buf[x,y].saturation = Math.Min(1, pixel[x,y].saturation * trackBarSaturation.Value / 100);
                     // Преобразуем обратно в RGB
-                    Color newColor = ConvertHSVtoRGB(pixel[x, y]);
+                    Color newColor = ConvertHSVtoRGB(pixel_buf[x,y]);
                     processedImage.SetPixel(x, y, newColor);
                 }
             }
-            f = false;
             pictureBox1.Image = processedImage;
         }
 
@@ -276,20 +273,17 @@ namespace WindowsFormsApp1
         {
             int widht = originalImage.Width;
             int height = originalImage.Height;
-
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < widht; x++)
                 {
                     // Изменяем значения HSV на основе ползунков
-                    pixel[x, y].brightness = Math.Min(255, pixel[x, y].brightness * trackBarBrightness.Value / 100);
-
+                    pixel_buf[x,y].brightness = Math.Min(255, pixel[x, y].brightness * trackBarBrightness.Value / 100);
                     // Преобразуем обратно в RGB
-                    Color newColor = ConvertHSVtoRGB(pixel[x, y]);
+                    Color newColor = ConvertHSVtoRGB(pixel_buf[x, y]);
                     processedImage.SetPixel(x, y, newColor);
                 }
             }
-            f = false;
             pictureBox1.Image = processedImage;
         }
 
